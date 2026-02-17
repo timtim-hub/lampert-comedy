@@ -32,19 +32,26 @@ export function Footer() {
         >
           {/* Brand */}
           <motion.div variants={slideUpVariants} className="lg:col-span-2">
-            <h3 className="font-display text-4xl md:text-5xl font-bold text-cream mb-4">
-              LAMPERT
+            <h3 className="font-display text-4xl md:text-5xl font-bold text-cream mb-2">
+              Fabian Lampert
             </h3>
+            <p className="text-warm font-display text-sm tracking-wider uppercase mb-4">
+              Stand Up Comedy
+            </p>
             <p className="text-cream-dim/60 max-w-sm mb-6">
-              Stand Up Comedy aus Leidenschaft. 
-              Vom Bayern nach Köln – und quer durch Deutschland.
+              Fabian Lampert ist Stand Up Comedian aus Köln. 
+              Vom Bayern nach Köln – und quer durch Deutschland 
+              begeistert er sein Publikum.
             </p>
             <div className="flex items-center gap-4">
               <motion.a
-                href="https://instagram.com"
+                href="https://www.instagram.com/fabian.lampert/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-12 h-12 rounded-full border border-warm/30 flex items-center justify-center text-cream hover:bg-warm hover:text-void hover:border-warm transition-all duration-300"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
+                aria-label="Instagram"
               >
                 <Instagram className="w-5 h-5" />
               </motion.a>
@@ -53,6 +60,7 @@ export function Footer() {
                 className="w-12 h-12 rounded-full border border-warm/30 flex items-center justify-center text-cream hover:bg-warm hover:text-void hover:border-warm transition-all duration-300"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
+                aria-label="Email"
               >
                 <Mail className="w-5 h-5" />
               </motion.a>
@@ -66,7 +74,7 @@ export function Footer() {
             </h4>
             <ul className="space-y-3">
               {[
-                { label: "Über mich", href: "#about" },
+                { label: "Über Fabian", href: "#about" },
                 { label: "Termine", href: "#tour" },
                 { label: "TV & Media", href: "#tv" },
                 { label: "Pressebilder", href: "#gallery" },
@@ -89,8 +97,23 @@ export function Footer() {
               Kontakt
             </h4>
             <div className="space-y-3 text-cream-dim/70">
-              <p>info@fabianlampert.de</p>
+              <p>
+                <a href="mailto:info@fabianlampert.de" className="hover:text-warm transition-colors">
+                  info@fabianlampert.de
+                </a>
+              </p>
               <p className="text-sm">Für Booking-Anfragen und Presse</p>
+              <p className="pt-2">
+                <a 
+                  href="https://www.instagram.com/fabian.lampert/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-warm hover:text-cream transition-colors"
+                >
+                  <Instagram className="w-4 h-4" />
+                  @fabian.lampert
+                </a>
+              </p>
             </div>
           </motion.div>
         </motion.div>
@@ -141,6 +164,7 @@ export function Footer() {
           animate={{ opacity: 1, scale: 1 }}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
+          aria-label="Zurück nach oben"
         >
           <motion.span
             animate={{ y: [0, -2, 0] }}

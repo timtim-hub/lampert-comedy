@@ -3,32 +3,35 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
 import { motionTokens, staggerContainer, slideUpVariants } from "@/lib/utils";
-import { MapPin, Calendar, ArrowUpRight } from "lucide-react";
+import { MapPin, Calendar, ArrowUpRight, Ticket } from "lucide-react";
 
 interface TourDate {
   date: string;
+  weekday: string;
   event: string;
   venue: string;
   city: string;
   tickets?: string;
+  featured?: boolean;
 }
 
+// ALL tour dates extracted from original site
 const tourDates: TourDate[] = [
-  { date: "23.10.25", event: "Einer dieser Abende", venue: "Comedy Club", city: "Köln", tickets: "#" },
-  { date: "14.01.26", event: "Einer dieser Abende", venue: "Comedy Club", city: "Essen", tickets: "#" },
-  { date: "15.01.26", event: "Einer dieser Abende", venue: "Theater", city: "Frankfurt/Main", tickets: "#" },
-  { date: "22.01.26", event: "Einer dieser Abende", venue: "Comedy Club", city: "Hamburg", tickets: "#" },
-  { date: "25.01.26", event: "Einer dieser Abende", venue: "Comedy Club", city: "Bonn", tickets: "#" },
-  { date: "27.01.26", event: "Showcase IKF", venue: "Theater", city: "Freiburg", tickets: "#" },
-  { date: "28.01.26", event: "Einer dieser Abende", venue: "Comedy Club", city: "Berlin", tickets: "#" },
-  { date: "01.02.26", event: "Einer dieser Abende", venue: "Theater", city: "Aachen", tickets: "#" },
-  { date: "05.03.26", event: "Einer dieser Abende", venue: "Comedy Club", city: "Mainz", tickets: "#" },
-  { date: "11.03.26", event: "Einer dieser Abende", venue: "Theater", city: "München", tickets: "#" },
-  { date: "14.03.26", event: "Einer dieser Abende", venue: "Comedy Club", city: "Stuttgart", tickets: "#" },
-  { date: "15.03.26", event: "Einer dieser Abende", venue: "Comedy Club", city: "Köln", tickets: "#" },
-  { date: "07.06.26", event: "Einer dieser Abende", venue: "Theater", city: "Düsseldorf", tickets: "#" },
-  { date: "18.10.26", event: "Einer dieser Abende", venue: "Comedy Club", city: "Hannover", tickets: "#" },
-  { date: "21.11.26", event: "Einer dieser Abende", venue: "Theater", city: "Gelsenkirchen", tickets: "#" },
+  { date: "23.10.25", weekday: "Do", event: "Einer dieser Abende", venue: "Comedy Club", city: "Köln", featured: true },
+  { date: "14.01.26", weekday: "Mi", event: "Einer dieser Abende", venue: "Comedy Club", city: "Essen" },
+  { date: "15.01.26", weekday: "Do", event: "Einer dieser Abende", venue: "Theater", city: "Frankfurt/Main" },
+  { date: "22.01.26", weekday: "Do", event: "Einer dieser Abende", venue: "Comedy Club", city: "Hamburg" },
+  { date: "25.01.26", weekday: "So", event: "Einer dieser Abende", venue: "Comedy Club", city: "Bonn" },
+  { date: "27.01.26", weekday: "Di", event: "Showcase IKF", venue: "Theater", city: "Freiburg", featured: true },
+  { date: "28.01.26", weekday: "Mi", event: "Einer dieser Abende", venue: "Comedy Club", city: "Berlin", featured: true },
+  { date: "01.02.26", weekday: "So", event: "Einer dieser Abende", venue: "Theater", city: "Aachen" },
+  { date: "05.03.26", weekday: "Do", event: "Einer dieser Abende", venue: "Comedy Club", city: "Mainz" },
+  { date: "11.03.26", weekday: "Mi", event: "Einer dieser Abende", venue: "Theater", city: "München" },
+  { date: "14.03.26", weekday: "Sa", event: "Einer dieser Abende", venue: "Comedy Club", city: "Stuttgart" },
+  { date: "15.03.26", weekday: "So", event: "Einer dieser Abende", venue: "Comedy Club", city: "Köln", featured: true },
+  { date: "07.06.26", weekday: "So", event: "Einer dieser Abende", venue: "Theater", city: "Düsseldorf" },
+  { date: "18.10.26", weekday: "So", event: "Einer dieser Abende", venue: "Comedy Club", city: "Hannover" },
+  { date: "21.11.26", weekday: "Sa", event: "Einer dieser Abende", venue: "Theater", city: "Gelsenkirchen" },
 ];
 
 function TourCard({ date, index }: { date: TourDate; index: number }) {
@@ -56,7 +59,9 @@ function TourCard({ date, index }: { date: TourDate; index: number }) {
       onMouseLeave={() => setIsHovered(false)}
     >
       <motion.div
-        className="relative flex items-center gap-6 md:gap-12 py-6 border-b border-warm/10 cursor-pointer overflow-hidden"
+        className={`relative flex items-center gap-4 md:gap-8 py-6 border-b cursor-pointer overflow-hidden ${
+          date.featured ? "border-warm/30" : "border-warm/10"
+        }`}
         whileHover={{ x: 10 }}
         transition={{ duration: 0.3 }}
       >
@@ -69,8 +74,22 @@ function TourCard({ date, index }: { date: TourDate; index: number }) {
           style={{ originX: 0 }}
         />
 
+        {/* Featured indicator */}
+        {date.featured && (
+          <motion.div
+            className="absolute left-0 top-0 bottom-0 w-1 bg-warm"
+            initial={{ scaleY: 0 }}
+            whileInView={{ scaleY: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.05 + 0.2 }}
+          />
+        )}
+
         {/* Date */}
-        <div className="relative flex-shrink-0 w-24 md:w-32">
+        <div className="relative flex-shrink-0 w-20 md:w-28 text-center">
+          <span className="block text-cream-dim/50 text-xs font-display uppercase tracking-wider mb-1">
+            {date.weekday}
+          </span>
           <span className="block font-display text-3xl md:text-4xl font-bold text-warm date-badge">
             {day}
           </span>
@@ -80,15 +99,21 @@ function TourCard({ date, index }: { date: TourDate; index: number }) {
         </div>
 
         {/* Event info */}
-        <div className="relative flex-grow">
-          <h3 className="font-display text-xl md:text-2xl font-bold text-cream group-hover:text-warm transition-colors duration-300">
+        <div className="relative flex-grow min-w-0">
+          <h3 className="font-display text-xl md:text-2xl font-bold text-cream group-hover:text-warm transition-colors duration-300 truncate">
             {date.event}
           </h3>
-          <div className="flex items-center gap-4 mt-1 text-cream-dim/60 text-sm">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1 text-cream-dim/60 text-sm">
             <span className="flex items-center gap-1">
               <MapPin className="w-4 h-4" />
               {date.city}
             </span>
+            {date.venue && (
+              <span className="hidden md:inline text-cream-dim/40">|</span>
+            )}
+            {date.venue && (
+              <span className="hidden md:inline">{date.venue}</span>
+            )}
           </div>
         </div>
 
@@ -100,7 +125,8 @@ function TourCard({ date, index }: { date: TourDate; index: number }) {
           transition={{ duration: 0.2 }}
         >
           <div className="flex items-center gap-2 text-warm">
-            <span className="text-sm font-display tracking-wider uppercase">Tickets</span>
+            <Ticket className="w-5 h-5" />
+            <span className="hidden md:inline text-sm font-display tracking-wider uppercase">Tickets</span>
             <ArrowUpRight className="w-5 h-5" />
           </div>
         </motion.div>
@@ -123,7 +149,7 @@ export function TourDates() {
       className="relative py-32 md:py-48 px-6 md:px-12 lg:px-24"
     >
       {/* Section header */}
-      <div className="max-w-7xl mx-auto mb-16">
+      <div className="max-w-5xl mx-auto mb-16">
         <motion.div
           variants={staggerContainer}
           initial="hidden"
@@ -149,6 +175,7 @@ export function TourDates() {
             variants={slideUpVariants}
             className="text-cream-dim/70 max-w-md text-lg"
           >
+            Alle aktuellen Shows von Fabian Lampert. 
             Live-Erlebnisse in ausgewählten Clubs und Theatern 
             quer durch Deutschland.
           </motion.p>
@@ -156,7 +183,7 @@ export function TourDates() {
       </div>
 
       {/* Tour list */}
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <AnimatePresence mode="wait">
           {visibleDates.map((date, index) => (
             <TourCard key={date.date + date.city} date={date} index={index} />
@@ -178,7 +205,7 @@ export function TourDates() {
               whileTap={{ scale: 0.98 }}
             >
               <span className="relative z-10 flex items-center gap-2">
-                {expanded ? "Weniger anzeigen" : "Alle Termine"}
+                {expanded ? "Weniger anzeigen" : `Alle ${tourDates.length} Termine`}
                 <motion.span
                   animate={{ rotate: expanded ? 180 : 0 }}
                   transition={{ duration: 0.3 }}

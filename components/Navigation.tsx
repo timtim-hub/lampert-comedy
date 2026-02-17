@@ -2,10 +2,10 @@
 
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Instagram } from "lucide-react";
 
 const navItems = [
-  { label: "Über mich", href: "#about" },
+  { label: "Über", href: "#about" },
   { label: "Termine", href: "#tour" },
   { label: "TV", href: "#tv" },
   { label: "Presse", href: "#gallery" },
@@ -66,7 +66,7 @@ export function Navigation() {
           {/* Logo */}
           <motion.a
             href="#"
-            className="font-display text-2xl font-bold text-cream"
+            className="font-display text-xl md:text-2xl font-bold text-cream"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 2, duration: 0.5 }}
@@ -75,7 +75,8 @@ export function Navigation() {
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
           >
-            LAMPERT
+            <span className="hidden md:inline">Fabian Lampert</span>
+            <span className="md:hidden">F. Lampert</span>
           </motion.a>
 
           {/* Desktop nav */}
@@ -105,6 +106,19 @@ export function Navigation() {
                 />
               </motion.a>
             ))}
+            
+            {/* Instagram link */}
+            <motion.a
+              href="https://www.instagram.com/fabian.lampert/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 rounded-full border border-warm/30 flex items-center justify-center text-cream hover:bg-warm hover:text-void hover:border-warm transition-all"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              aria-label="Instagram"
+            >
+              <Instagram className="w-4 h-4" />
+            </motion.a>
           </motion.nav>
 
           {/* Mobile menu button */}
@@ -114,6 +128,7 @@ export function Navigation() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 2 }}
+            aria-label={isOpen ? "Menü schließen" : "Menü öffnen"}
           >
             <AnimatePresence mode="wait">
               {isOpen ? (
@@ -170,6 +185,21 @@ export function Navigation() {
                   {item.label}
                 </motion.a>
               ))}
+              
+              {/* Mobile Instagram */}
+              <motion.a
+                href="https://www.instagram.com/fabian.lampert/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 mt-8 text-warm"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ delay: 0.4 }}
+              >
+                <Instagram className="w-6 h-6" />
+                <span className="font-display text-lg">@fabian.lampert</span>
+              </motion.a>
             </div>
           </motion.div>
         )}

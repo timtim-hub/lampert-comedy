@@ -15,8 +15,16 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "LAMPERT | Stand Up Comedy",
-  description: "Fabian Lampert - Stand Up Comedian. Einer dieser Abende - Die Comedy Show.",
+  title: "Fabian Lampert | Stand Up Comedy",
+  description: "Fabian Lampert - Stand Up Comedian aus Köln. Einer dieser Abende - Die Comedy Show. Auftritte bei Nightwash, Quatsch Comedy Club und mehr.",
+  keywords: ["Fabian Lampert", "Stand Up Comedy", "Comedian", "Köln", "Nightwash", "Quatsch Comedy Club", "Einer dieser Abende"],
+  authors: [{ name: "Fabian Lampert" }],
+  openGraph: {
+    title: "Fabian Lampert | Stand Up Comedy",
+    description: "Fabian Lampert - Stand Up Comedian. Einer dieser Abende - Die Comedy Show.",
+    type: "website",
+    locale: "de_DE",
+  },
 };
 
 export default function RootLayout({

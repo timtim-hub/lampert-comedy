@@ -3,45 +3,52 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
 import { motionTokens, staggerContainer, slideUpVariants } from "@/lib/utils";
-import { Download, X, ZoomIn } from "lucide-react";
+import { Download, X, ZoomIn, ImageIcon } from "lucide-react";
+import Image from "next/image";
 
-// Placeholder images using gradient patterns instead of external URLs
+// Gallery items with actual downloaded images
 const galleryItems = [
   { 
     id: 1, 
-    title: "Bühnenportrait",
-    gradient: "from-warm/40 to-warm-dim/20",
-    size: "large"
+    title: "Fabian Lampert Portrait",
+    src: "/images/fabian-portrait.png",
+    size: "large",
+    category: "Portrait"
   },
   { 
     id: 2, 
-    title: "Nightwash Auftritt", 
-    gradient: "from-cream/20 to-warm/30",
-    size: "medium"
+    title: "Live on Stage", 
+    src: "/images/stage-wide.jpg",
+    size: "wide",
+    category: "Live"
   },
   { 
     id: 3, 
-    title: "Quatsch Comedy Club",
-    gradient: "from-accent/20 to-warm/20", 
-    size: "medium"
+    title: "Show Moment",
+    src: "/images/gallery-1.jpg", 
+    size: "medium",
+    category: "Live"
   },
   { 
     id: 4, 
     title: "Backstage",
-    gradient: "from-void to-stage",
-    size: "small"
+    src: "/images/gallery-2.png",
+    size: "medium",
+    category: "Behind the Scenes"
   },
   { 
     id: 5, 
-    title: "Publikum",
-    gradient: "from-warm/30 to-void",
-    size: "small"
+    title: "Bühnenauftritt",
+    src: "/images/gallery-3.jpg",
+    size: "medium",
+    category: "Live"
   },
   { 
     id: 6, 
-    title: "Tour 2024",
-    gradient: "from-cream-dim/20 to-warm/40",
-    size: "large"
+    title: "Fabian Lampert",
+    src: "/images/fabian-hero.png",
+    size: "large",
+    category: "Portrait"
   },
 ];
 
@@ -79,21 +86,23 @@ export function Gallery() {
             variants={slideUpVariants}
             className="text-cream-dim/70 max-w-lg text-lg"
           >
-            Hochauflösende Pressebilder für Veranstalter, Medien und Partner.
+            Hochauflösende Pressebilder von Fabian Lampert für Veranstalter, 
+            Medien und Partner. Alle Bilder stehen zur freien Verwendung bei 
+            Nennung des Namens zur Verfügung.
           </motion.p>
         </motion.div>
       </div>
 
       {/* Masonry Gallery */}
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px]">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {galleryItems.map((item, index) => (
             <motion.div
               key={item.id}
               className={`group relative overflow-hidden rounded-sm cursor-pointer ${
                 item.size === "large" ? "col-span-2 row-span-2" :
-                item.size === "medium" ? "col-span-1 row-span-2" :
-                "col-span-1 row-span-1"
+                item.size === "wide" ? "col-span-2" :
+                "col-span-1"
               }`}
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -105,49 +114,58 @@ export function Gallery() {
               }}
               onClick={() => setSelectedImage(item)}
             >
-              {/* Image placeholder with gradient */}
-              <motion.div
-                className={`absolute inset-0 bg-gradient-to-br ${item.gradient}`}
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.6, ease: motionTokens.easing.out }}
-              />
-              
-              {/* Overlay */}
-              <motion.div
-                className="absolute inset-0 bg-void/60"
-                initial={{ opacity: 0 }}
-                whileHover={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              />
+              <div className={`relative ${
+                item.size === "large" ? "aspect-square" :
+                item.size === "wide" ? "aspect-[2/1]" :
+                "aspect-[3/4]"
+              }`}>
+                <Image
+                  src={item.src}
+                  alt={item.title}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                
+                {/* Overlay */}
+                <motion.div
+                  className="absolute inset-0 bg-void/60"
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                />
 
-              {/* Content */}
-              <motion.div
-                className="absolute inset-0 flex flex-col justify-end p-6"
-                initial={{ opacity: 0, y: 20 }}
-                whileHover={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <h3 className="font-display text-xl font-bold text-cream mb-2">
-                  {item.title}
-                </h3>
-                <div className="flex items-center gap-4">
-                  <button className="flex items-center gap-2 text-warm text-sm hover:text-cream transition-colors">
-                    <ZoomIn className="w-4 h-4" />
-                    <span className="font-display tracking-wider uppercase text-xs">Ansicht</span>
-                  </button>
-                  <button className="flex items-center gap-2 text-warm text-sm hover:text-cream transition-colors">
-                    <Download className="w-4 h-4" />
-                    <span className="font-display tracking-wider uppercase text-xs">Download</span>
-                  </button>
-                </div>
-              </motion.div>
+                {/* Content */}
+                <motion.div
+                  className="absolute inset-0 flex flex-col justify-end p-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileHover={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <span className="text-warm text-xs font-display uppercase tracking-wider mb-1">
+                    {item.category}
+                  </span>
+                  <h3 className="font-display text-lg md:text-xl font-bold text-cream mb-3">
+                    {item.title}
+                  </h3>
+                  <div className="flex items-center gap-4">
+                    <button className="flex items-center gap-2 text-cream hover:text-warm transition-colors text-sm">
+                      <ZoomIn className="w-4 h-4" />
+                      <span className="font-display tracking-wider uppercase text-xs">Ansicht</span>
+                    </button>
+                    <button className="flex items-center gap-2 text-cream hover:text-warm transition-colors text-sm">
+                      <Download className="w-4 h-4" />
+                      <span className="font-display tracking-wider uppercase text-xs">Download</span>
+                    </button>
+                  </div>
+                </motion.div>
 
-              {/* Border animation */}
-              <motion.div
-                className="absolute inset-0 border-2 border-warm/0"
-                whileHover={{ borderColor: "rgba(255,107,53,0.5)" }}
-                transition={{ duration: 0.3 }}
-              />
+                {/* Border animation */}
+                <motion.div
+                  className="absolute inset-0 border-2 border-warm/0"
+                  whileHover={{ borderColor: "rgba(255,107,53,0.5)" }}
+                  transition={{ duration: 0.3 }}
+                />
+              </div>
             </motion.div>
           ))}
         </div>
@@ -157,7 +175,7 @@ export function Gallery() {
       <AnimatePresence>
         {selectedImage && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-void/95"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 bg-void/95"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -165,7 +183,7 @@ export function Gallery() {
           >
             {/* Close button */}
             <motion.button
-              className="absolute top-6 right-6 w-12 h-12 rounded-full bg-warm/10 flex items-center justify-center text-cream hover:bg-warm/20 transition-colors z-10"
+              className="absolute top-4 right-4 md:top-6 md:right-6 w-12 h-12 rounded-full bg-warm/10 flex items-center justify-center text-cream hover:bg-warm/20 transition-colors z-10"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
@@ -176,24 +194,42 @@ export function Gallery() {
 
             {/* Image */}
             <motion.div
-              className={`relative w-full max-w-4xl bg-gradient-to-br ${selectedImage.gradient} rounded-sm overflow-hidden`}
+              className="relative max-w-5xl max-h-[85vh] w-full"
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="aspect-[4/3] w-full" />
+              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm">
+                <Image
+                  src={selectedImage.src}
+                  alt={selectedImage.title}
+                  fill
+                  className="object-contain"
+                />
+              </div>
               
               {/* Info bar */}
-              <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-void to-transparent">
-                <h3 className="font-display text-2xl font-bold text-cream mb-2">
-                  {selectedImage.title}
-                </h3>
-                <button className="flex items-center gap-2 px-4 py-2 bg-warm text-void font-display text-sm tracking-wider uppercase rounded-sm hover:bg-warm-dim transition-colors">
-                  <Download className="w-4 h-4" />
-                  Download HD
-                </button>
+              <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-void via-void/80 to-transparent">
+                <div className="flex items-end justify-between">
+                  <div>
+                    <span className="text-warm text-xs font-display uppercase tracking-wider">
+                      {selectedImage.category}
+                    </span>
+                    <h3 className="font-display text-2xl font-bold text-cream mt-1">
+                      {selectedImage.title}
+                    </h3>
+                  </div>
+                  <a
+                    href={selectedImage.src}
+                    download
+                    className="flex items-center gap-2 px-6 py-3 bg-warm text-void font-display text-sm tracking-wider uppercase rounded-sm hover:bg-warm-dim transition-colors"
+                  >
+                    <Download className="w-4 h-4" />
+                    Download HD
+                  </a>
+                </div>
               </div>
             </motion.div>
           </motion.div>
@@ -213,8 +249,9 @@ export function Gallery() {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
-          <Download className="w-5 h-5 text-warm group-hover:animate-bounce" />
+          <ImageIcon className="w-5 h-5 text-warm" />
           <span className="font-display text-sm tracking-wider uppercase">Alle Bilder (ZIP)</span>
+          <Download className="w-4 h-4 text-warm group-hover:translate-y-0.5 transition-transform" />
         </motion.button>
       </motion.div>
     </section>

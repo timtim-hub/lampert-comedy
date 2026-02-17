@@ -3,14 +3,45 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { motionTokens, staggerContainer, slideUpVariants, scaleVariants } from "@/lib/utils";
-import { Tv, Play } from "lucide-react";
+import { Tv, Play, ExternalLink } from "lucide-react";
+import Image from "next/image";
 
 const tvAppearances = [
-  { show: "Nightwash", channel: "TV NOW / RTL", year: "2023", highlight: true },
-  { show: "Quatsch Comedy Club", channel: "ProSieben", year: "2022", highlight: true },
-  { show: "Lucky Punch", channel: "BR Fernsehen", year: "2023", highlight: false },
-  { show: "Comedy Central", channel: "Comedy Central", year: "2022", highlight: false },
-  { show: "Downstairs", channel: "Berlin TV", year: "2024", highlight: false },
+  { 
+    show: "Nightwash", 
+    channel: "TV NOW / RTL", 
+    year: "2023", 
+    highlight: true,
+    description: "Das legendäre Comedy-Format"
+  },
+  { 
+    show: "Quatsch Comedy Club", 
+    channel: "ProSieben", 
+    year: "2022", 
+    highlight: true,
+    description: "Deutschlands bekanntester Comedy Club"
+  },
+  { 
+    show: "Lucky Punch", 
+    channel: "BR Fernsehen", 
+    year: "2023", 
+    highlight: false,
+    description: "Münchens heißeste Comedy Show"
+  },
+  { 
+    show: "Comedy Central", 
+    channel: "Comedy Central", 
+    year: "2022", 
+    highlight: false,
+    description: "Internationale Comedy-Highlights"
+  },
+  { 
+    show: "Downstairs", 
+    channel: "Berlin TV", 
+    year: "2024", 
+    highlight: false,
+    description: "Berlins Comedy-Szene"
+  },
 ];
 
 export function TVSection() {
@@ -52,7 +83,7 @@ export function TVSection() {
           variants={staggerContainer}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="flex items-start gap-6 mb-16"
+          className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-16"
         >
           <motion.div
             variants={scaleVariants}
@@ -82,7 +113,7 @@ export function TVSection() {
               variants={slideUpVariants}
               className="inline-block text-warm font-display text-sm tracking-[0.3em] uppercase mb-2"
             >
-              Media
+              TV & Media
             </motion.span>
             <motion.h2
               variants={slideUpVariants}
@@ -90,6 +121,56 @@ export function TVSection() {
             >
               Mama, ich war<br />im Fernsehen
             </motion.h2>
+          </div>
+        </motion.div>
+
+        {/* Stage Image */}
+        <motion.div
+          className="relative mb-16 rounded-sm overflow-hidden"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <div className="relative aspect-[21/9]">
+            <Image
+              src="/images/stage-wide.jpg"
+              alt="Fabian Lampert auf der Bühne"
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-void via-void/50 to-transparent" />
+            
+            {/* Play button overlay */}
+            <motion.div 
+              className="absolute inset-0 flex items-center justify-center"
+              whileHover={{ scale: 1.05 }}
+            >
+              <motion.div
+                className="w-20 h-20 rounded-full bg-warm flex items-center justify-center cursor-pointer"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Play className="w-8 h-8 text-void ml-1" fill="currentColor" />
+              </motion.div>
+            </motion.div>
+          </div>
+          
+          {/* Caption */}
+          <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
+            <div>
+              <p className="text-cream font-display text-lg">Fabian Lampert Live</p>
+              <p className="text-cream-dim/60 text-sm">Auftritt im Quatsch Comedy Club</p>
+            </div>
+            <a 
+              href="https://www.instagram.com/fabian.lampert/" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-warm hover:text-cream transition-colors"
+            >
+              <span className="text-sm font-display tracking-wider uppercase">Mehr Videos</span>
+              <ExternalLink className="w-4 h-4" />
+            </a>
           </div>
         </motion.div>
 
@@ -137,7 +218,8 @@ export function TVSection() {
                 <h3 className="font-display text-2xl font-bold text-cream mb-2 group-hover:text-warm transition-colors duration-300">
                   {appearance.show}
                 </h3>
-                <p className="text-cream-dim/60 text-sm">{appearance.channel}</p>
+                <p className="text-cream-dim/60 text-sm mb-2">{appearance.channel}</p>
+                <p className="text-cream-dim/40 text-xs">{appearance.description}</p>
 
                 {/* Play button on hover */}
                 <motion.div
@@ -172,7 +254,24 @@ export function TVSection() {
           viewport={{ once: true }}
           transition={{ delay: 0.5 }}
         >
-          Weitere Auftritte auf YouTube und Social Media
+          Weitere Auftritte und Clips auf{" "}
+          <a 
+            href="https://www.instagram.com/fabian.lampert/" 
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-warm hover:underline"
+          >
+            Instagram
+          </a>{" "}
+          und{" "}
+          <a 
+            href="https://www.youtube.com" 
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-warm hover:underline"
+          >
+            YouTube
+          </a>
         </motion.p>
       </div>
     </section>
