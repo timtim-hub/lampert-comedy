@@ -25,7 +25,7 @@ export function Hero() {
   return (
     <section 
       ref={ref}
-      className="relative min-h-screen flex flex-col justify-center overflow-hidden"
+      className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-24 md:pt-32"
     >
       {/* Animated background layers */}
       <div className="absolute inset-0 z-0">

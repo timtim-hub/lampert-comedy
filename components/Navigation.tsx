@@ -3,17 +3,17 @@
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Menu, X, Instagram } from "lucide-react";
+import Link from "next/link";
 
 const navItems = [
   { label: "Über", href: "#about" },
   { label: "Termine", href: "#tour" },
   { label: "TV", href: "#tv" },
-  { label: "Presse", href: "#gallery" },
+  { label: "Presse", href: "/presse" },
 ];
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const { scrollY } = useScroll();
   
   const backgroundColor = useTransform(
@@ -23,14 +23,6 @@ export function Navigation() {
   );
   
   const borderOpacity = useTransform(scrollY, [0, 100], [0, 1]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -45,9 +37,11 @@ export function Navigation() {
 
   const handleNavClick = (href: string) => {
     setIsOpen(false);
-    setTimeout(() => {
-      document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
-    }, 300);
+    if (href.startsWith("#")) {
+      setTimeout(() => {
+        document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+      }, 300);
+    }
   };
 
   return (
@@ -64,20 +58,20 @@ export function Navigation() {
         
         <div className="flex items-center justify-between h-20 md:h-24">
           {/* Logo */}
-          <motion.a
-            href="#"
-            className="font-display text-xl md:text-2xl font-bold text-cream"
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 2, duration: 0.5 }}
-            onClick={(e) => {
-              e.preventDefault();
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
           >
-            <span className="hidden md:inline">Fabian Lampert</span>
-            <span className="md:hidden">F. Lampert</span>
-          </motion.a>
+            <Link 
+              href="/"
+              className="font-display text-xl md:text-2xl font-bold text-cream hover:text-warm transition-colors"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            >
+              <span className="hidden md:inline">Fabian Lampert</span>
+              <span className="md:hidden">F. Lampert</span>
+            </Link>
+          </motion.div>
 
           {/* Desktop nav */}
           <motion.nav
@@ -87,24 +81,36 @@ export function Navigation() {
             transition={{ delay: 2, duration: 0.5 }}
           >
             {navItems.map((item, index) => (
-              <motion.a
-                key={item.label}
-                href={item.href}
-                className="relative font-display text-sm tracking-wider uppercase text-cream-dim hover:text-cream transition-colors group"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleNavClick(item.href);
-                }}
-                whileHover={{ y: -2 }}
-              >
-                {item.label}
-                <motion.span
-                  className="absolute -bottom-1 left-0 w-full h-px bg-warm origin-left"
-                  initial={{ scaleX: 0 }}
-                  whileHover={{ scaleX: 1 }}
-                  transition={{ duration: 0.3 }}
-                />
-              </motion.a>
+              item.href.startsWith("#") ? (
+                <motion.a
+                  key={item.label}
+                  href={item.href}
+                  className="relative font-display text-sm tracking-wider uppercase text-cream-dim hover:text-cream transition-colors group"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNavClick(item.href);
+                  }}
+                  whileHover={{ y: -2 }}
+                >
+                  {item.label}
+                  <motion.span
+                    className="absolute -bottom-1 left-0 w-full h-px bg-warm origin-left"
+                    initial={{ scaleX: 0 }}
+                    whileHover={{ scaleX: 1 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                </motion.a>
+              ) : (
+                <motion.div key={item.label} whileHover={{ y: -2 }}>
+                  <Link
+                    href={item.href}
+                    className="relative font-display text-sm tracking-wider uppercase text-cream-dim hover:text-cream transition-colors group"
+                  >
+                    {item.label}
+                    <span className="absolute -bottom-1 left-0 w-full h-px bg-warm origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
+                  </Link>
+                </motion.div>
+              )
             ))}
             
             {/* Instagram link */}
@@ -169,21 +175,39 @@ export function Navigation() {
           >
             <div className="flex flex-col items-center justify-center h-full gap-8">
               {navItems.map((item, index) => (
-                <motion.a
-                  key={item.label}
-                  href={item.href}
-                  className="font-display text-3xl font-bold text-cream"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ delay: index * 0.1 }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleNavClick(item.href);
-                  }}
-                >
-                  {item.label}
-                </motion.a>
+                item.href.startsWith("#") ? (
+                  <motion.a
+                    key={item.label}
+                    href={item.href}
+                    className="font-display text-3xl font-bold text-cream"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ delay: index * 0.1 }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavClick(item.href);
+                    }}
+                  >
+                    {item.label}
+                  </motion.a>
+                ) : (
+                  <motion.div
+                    key={item.label}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <Link
+                      href={item.href}
+                      className="font-display text-3xl font-bold text-cream"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                  </motion.div>
+                )
               ))}
               
               {/* Mobile Instagram */}

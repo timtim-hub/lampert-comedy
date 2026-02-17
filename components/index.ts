@@ -2,7 +2,6 @@ export { Hero } from "./Hero";
 export { About } from "./About";
 export { TourDates } from "./TourDates";
 export { TVSection } from "./TVSection";
-export { Gallery } from "./Gallery";
 export { Footer } from "./Footer";
 export { Navigation } from "./Navigation";
 export { CursorSpotlight } from "./CursorSpotlight";

@@ -4,7 +4,6 @@ import {
   About, 
   TourDates, 
   TVSection, 
-  Gallery, 
   Footer,
   CursorSpotlight 
 } from "@/components";
@@ -26,7 +25,6 @@ export default function Home() {
       <About />
       <TourDates />
       <TVSection />
-      <Gallery />
       <Footer />
     </main>
   );

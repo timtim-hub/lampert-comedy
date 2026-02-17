@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { motionTokens, staggerContainer, slideUpVariants } from "@/lib/utils";
 import { MagneticLink } from "./MagneticButton";
 import { Instagram, Mail, ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 
 export function Footer() {
   const ref = useRef<HTMLElement>(null);
@@ -73,21 +74,38 @@ export function Footer() {
               Navigation
             </h4>
             <ul className="space-y-3">
-              {[
-                { label: "Über Fabian", href: "#about" },
-                { label: "Termine", href: "#tour" },
-                { label: "TV & Media", href: "#tv" },
-                { label: "Pressebilder", href: "#gallery" },
-              ].map((link) => (
-                <li key={link.label}>
-                  <MagneticLink 
-                    href={link.href}
-                    className="text-cream-dim/70 hover:text-cream transition-colors"
-                  >
-                    {link.label}
-                  </MagneticLink>
-                </li>
-              ))}
+              <li>
+                <MagneticLink 
+                  href="#about"
+                  className="text-cream-dim/70 hover:text-cream transition-colors"
+                >
+                  Über Fabian
+                </MagneticLink>
+              </li>
+              <li>
+                <MagneticLink 
+                  href="#tour"
+                  className="text-cream-dim/70 hover:text-cream transition-colors"
+                >
+                  Termine
+                </MagneticLink>
+              </li>
+              <li>
+                <MagneticLink 
+                  href="#tv"
+                  className="text-cream-dim/70 hover:text-cream transition-colors"
+                >
+                  TV & Media
+                </MagneticLink>
+              </li>
+              <li>
+                <Link 
+                  href="/presse"
+                  className="text-cream-dim/70 hover:text-cream transition-colors underline-hover"
+                >
+                  Pressebilder
+                </Link>
+              </li>
             </ul>
           </motion.div>
 
@@ -151,8 +169,8 @@ export function Footer() {
         >
           <p>© {currentYear} Fabian Lampert. Alle Rechte vorbehalten.</p>
           <div className="flex items-center gap-6">
-            <a href="#" className="hover:text-cream transition-colors">Impressum</a>
-            <a href="#" className="hover:text-cream transition-colors">Datenschutz</a>
+            <Link href="/impressum" className="hover:text-cream transition-colors">Impressum</Link>
+            <Link href="/datenschutz" className="hover:text-cream transition-colors">Datenschutz</Link>
           </div>
         </motion.div>
 
